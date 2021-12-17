@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var rvLanguages : RecyclerView
+    private lateinit var rvLanguages: RecyclerView
     private var list: ArrayList<Language> = arrayListOf()
     private var title: String = "Mode List"
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rvLanguages =findViewById(R.id.rv_languages)
+        rvLanguages = findViewById(R.id.rv_languages)
         rvLanguages.setHasFixedSize(true)
 
         list.addAll(LanguagesData.listData)
@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         val listLanguageAdapter = ListLanguageAdapter(list)
         rvLanguages.adapter = listLanguageAdapter
 
-        listLanguageAdapter.setOnItemClickCallback(object : ListLanguageAdapter.OnItemClickCallback{
+        listLanguageAdapter.setOnItemClickCallback(object :
+            ListLanguageAdapter.OnItemClickCallback {
             override fun onItemClicked(data: Language) {
                 showSelectedLanguage(data)
             }
@@ -47,19 +48,21 @@ class MainActivity : AppCompatActivity() {
         val gridLanguageAdapter = GridLanguageAdapter(list)
         rvLanguages.adapter = gridLanguageAdapter
 
-        gridLanguageAdapter.setOnItemClickCallback(object : GridLanguageAdapter.OnItemClickCallback {
+        gridLanguageAdapter.setOnItemClickCallback(object :
+            GridLanguageAdapter.OnItemClickCallback {
             override fun onItemClicked(data: Language) {
-                showSelectedLanguage(data )
+                showSelectedLanguage(data)
             }
         })
     }
 
-    private fun showRecyclerCardView(){
+    private fun showRecyclerCardView() {
         rvLanguages.layoutManager = LinearLayoutManager(this)
         val cardViewLanguageAdapter = CardViewLanguageAdapter(list)
         rvLanguages.adapter = cardViewLanguageAdapter
 
-        cardViewLanguageAdapter.setOnItemClickCallback(object : CardViewLanguageAdapter.OnItemClickCallback{
+        cardViewLanguageAdapter.setOnItemClickCallback(object :
+            CardViewLanguageAdapter.OnItemClickCallback {
             override fun onItemClicked(data: Language) {
                 showSelectedLanguage(data)
             }
@@ -80,8 +83,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = title
     }
 
-    private fun setMode(selectedMode: Int){
-        when(selectedMode){
+    private fun setMode(selectedMode: Int) {
+        when (selectedMode) {
             R.id.action_list -> {
                 title = "Mode List"
                 showRecyclerList()
@@ -103,12 +106,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSelectedLanguage(language: Language) {
-        Toast.makeText(this, "Kamu memilih " + language.name, Toast.LENGTH_SHORT).show()
-
+        val stringToast: String = getString(R.string.toast)
+        Toast.makeText(this, stringToast + " " + language.name, Toast.LENGTH_SHORT).show()
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("extra_language", language)
         startActivity(intent)
     }
-
-
 }
