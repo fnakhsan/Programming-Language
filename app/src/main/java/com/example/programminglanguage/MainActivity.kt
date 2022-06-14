@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSelectedLanguage(language: Language) {
         val stringToast: String = getString(R.string.toast)
-        Toast.makeText(this, stringToast + " " + language.name, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, stringToast + language.name, Toast.LENGTH_SHORT).show()
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("extra_language", language)
         startActivity(intent)

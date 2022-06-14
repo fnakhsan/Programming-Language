@@ -8,10 +8,6 @@ import android.widget.TextView
 
 class DetailActivity : AppCompatActivity() {
 
-    companion object {
-        val EXTRA_LANGUAGE = "extra_language"
-    }
-
     private var title: String = "Programming Language"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,5 +36,9 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setActionBar(title: String) {
         supportActionBar?.title = title
+    }
+
+    companion object {
+        const val EXTRA_LANGUAGE = "extra_language"
     }
 }

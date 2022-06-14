@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class CardViewLanguageAdapter(val listLanguage: ArrayList<Language>) :
+class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
     RecyclerView.Adapter<CardViewLanguageAdapter.CardViewViewHolder>()  {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
@@ -51,11 +51,11 @@ class CardViewLanguageAdapter(val listLanguage: ArrayList<Language>) :
         holder.tvName.text = language.name
         holder.tvDetail.text = language.detail
 
-        holder.btnFavorite.setOnClickListener { Toast.makeText(holder.itemView.context, "Like " + listLanguage[holder.adapterPosition].name, Toast.LENGTH_SHORT).show()
+        holder.btnFavorite.setOnClickListener { Toast.makeText(holder.itemView.context, "Like " + listLanguage[position].name, Toast.LENGTH_SHORT).show()
             holder.btnFavorite.isSelected = !holder.btnFavorite.isSelected
         }
 
-        holder.btnShare.setOnClickListener { Toast.makeText(holder.itemView.context, "Share " + listLanguage[holder.adapterPosition].name, Toast.LENGTH_SHORT).show()
+        holder.btnShare.setOnClickListener { Toast.makeText(holder.itemView.context, "Share " + listLanguage[position].name, Toast.LENGTH_SHORT).show()
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, "${language.name} language, ${language.detail}")
@@ -64,13 +64,10 @@ class CardViewLanguageAdapter(val listLanguage: ArrayList<Language>) :
             val shareIntent = Intent.createChooser(sendIntent, null)
             holder.btnShare.context.startActivity(shareIntent)
         }
-        holder.itemView.setOnClickListener { Toast.makeText(holder.itemView.context, "Kamu memilih " + listLanguage[holder.adapterPosition].name, Toast.LENGTH_SHORT).show() }
+        holder.itemView.setOnClickListener { Toast.makeText(holder.itemView.context, "You choose " + listLanguage[position].name, Toast.LENGTH_SHORT).show() }
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listLanguage[position]) }
 
     }
 
-
-    override fun getItemCount(): Int {
-        return listLanguage.size
-    }
+    override fun getItemCount(): Int = listLanguage.size
 }
