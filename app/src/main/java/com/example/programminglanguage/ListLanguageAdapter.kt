@@ -36,7 +36,7 @@ class ListLanguageAdapter (private val listLanguage: ArrayList<Language>) :
         holder.tvName.text = language.name
         holder.tvDetail.text = language.detail
 
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listLanguage[holder.adapterPosition]) }
+        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listLanguage[position]) }
 
     }
 

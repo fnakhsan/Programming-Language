@@ -64,9 +64,7 @@ class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
             val shareIntent = Intent.createChooser(sendIntent, null)
             holder.btnShare.context.startActivity(shareIntent)
         }
-        holder.itemView.setOnClickListener { Toast.makeText(holder.itemView.context, "You choose " + listLanguage[position].name, Toast.LENGTH_SHORT).show() }
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listLanguage[position]) }
-
     }
 
     override fun getItemCount(): Int = listLanguage.size
