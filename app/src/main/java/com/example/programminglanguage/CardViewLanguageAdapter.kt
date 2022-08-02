@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
-    RecyclerView.Adapter<CardViewLanguageAdapter.CardViewViewHolder>()  {
+    RecyclerView.Adapter<CardViewLanguageAdapter.CardViewViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -36,35 +36,47 @@ class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_cardview_language, parent, false)
+        val view: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_cardview_language, parent, false)
         return CardViewViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CardViewViewHolder, position: Int) {
         val language = listLanguage[position]
+        holder.apply {
+            Glide.with(itemView.context)
+                .load(language.photo)
+                .apply(RequestOptions().override(350, 550))
+                .into(imgPhoto)
 
-        Glide.with(holder.itemView.context)
-            .load(language.photo)
-            .apply(RequestOptions().override(350, 550))
-            .into(holder.imgPhoto)
+            tvName.text = language.name
+            tvDetail.text = language.detail
 
-        holder.tvName.text = language.name
-        holder.tvDetail.text = language.detail
-
-        holder.btnFavorite.setOnClickListener { Toast.makeText(holder.itemView.context, "Like " + listLanguage[position].name, Toast.LENGTH_SHORT).show()
-            holder.btnFavorite.isSelected = !holder.btnFavorite.isSelected
-        }
-
-        holder.btnShare.setOnClickListener { Toast.makeText(holder.itemView.context, "Share " + listLanguage[position].name, Toast.LENGTH_SHORT).show()
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "${language.name} language, ${language.detail}")
-                type = "text/plain"
+            btnFavorite.setOnClickListener {
+                Toast.makeText(
+                    itemView.context,
+                    "Like " + listLanguage[position].name,
+                    Toast.LENGTH_SHORT
+                ).show()
+                btnFavorite.isSelected = !btnFavorite.isSelected
             }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            holder.btnShare.context.startActivity(shareIntent)
+
+            btnShare.setOnClickListener {
+                Toast.makeText(
+                    itemView.context,
+                    "Share " + listLanguage[position].name,
+                    Toast.LENGTH_SHORT
+                ).show()
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "${language.name} language, ${language.detail}")
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                btnShare.context.startActivity(shareIntent)
+            }
+            itemView.setOnClickListener { onItemClickCallback.onItemClicked(listLanguage[position]) }
         }
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listLanguage[position]) }
     }
 
     override fun getItemCount(): Int = listLanguage.size
