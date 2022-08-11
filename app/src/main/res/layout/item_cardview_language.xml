@@ -71,7 +71,6 @@
                 android:layout_weight="1"
                 android:text="@string/like"
                 android:backgroundTint="@color/button_background_color"
-                
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 

@@ -30,6 +30,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        setMode(item.itemId)
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun showRecyclerList() {
         rvLanguages.layoutManager = LinearLayoutManager(this)
         val listLanguageAdapter = ListLanguageAdapter(list)
@@ -67,16 +77,6 @@ class MainActivity : AppCompatActivity() {
                 showSelectedLanguage(data)
             }
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        setMode(item.itemId)
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setActionBarTitle(title: String) {
