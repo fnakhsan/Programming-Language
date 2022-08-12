@@ -13,6 +13,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var title: String
     private lateinit var language: Language
+    private var favStatus: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ class DetailActivity : AppCompatActivity() {
         val detail = findViewById<TextView>(R.id.tv_item_detail)
 
         photo.setImageResource(language.photo!!)
-        title = language.name!!
+        title = language.name ?: "Programming Language"
         name.text = title
         dev.text = language.developer
         paradigm.text = language.paradigm
@@ -47,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
             R.id.action_share -> {
                 Toast.makeText(
                     this,
-                    "Share $title",
+                    "Shared $title",
                     Toast.LENGTH_SHORT
                 ).show()
                 val sendIntent: Intent = Intent().apply {
@@ -59,12 +60,26 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
             R.id.action_favorite -> {
-                Toast.makeText(
-                    this,
-                    "Favorite $title",
-                    Toast.LENGTH_SHORT
-                ).show()
-                item.setIcon(R.drawable.ic_baseline_share_24)
+                favStatus = when(favStatus){
+                    false -> {
+                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        Toast.makeText(
+                            this,
+                            "Liked $title",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        true
+                    }
+                    true -> {
+                        Toast.makeText(
+                            this,
+                            "Disliked $title",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        false
+                    }
+                }
             }
         }
         return super.onOptionsItemSelected(item)
