@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.programminglanguage.model.Language
+import com.example.programminglanguage.model.LanguagesData
 //import kotlinx.coroutines.Dispatchers
 //import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
@@ -159,5 +161,9 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("extra_language", language)
         startActivity(intent)
+    }
+
+    companion object {
+        const val TAG = "main"
     }
 }

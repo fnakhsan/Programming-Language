@@ -9,7 +9,11 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.programminglanguage.databinding.ActivityDetailBinding
+//import com.example.programminglanguage.model.Favorite
+import com.example.programminglanguage.model.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,34 +21,42 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var title: String
     private lateinit var language: Language
-    private lateinit var favorite: Favorite
-    private lateinit var dao: FavoriteDao
+//    private lateinit var favorite: Language
+
+    //    private lateinit var dao: FavoriteDao
     private var favStatus: Boolean = false
+
+    private var _binding: ActivityDetailBinding? = null
+    private val binding get() = _binding as ActivityDetailBinding
+    private lateinit var detailViewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+
+        _binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        detailViewModel = obtainViewModel(this@DetailActivity)
 
         language = intent.getParcelableExtra(EXTRA_LANGUAGE)!!
+        Log.d(TAG, "$language")
 
-        dao = FavoriteDatabase.getInstance(this).favoriteDao
-
-        val photo = findViewById<ImageView>(R.id.img_item_photo)
-        val name = findViewById<TextView>(R.id.tv_item_name)
-        val dev = findViewById<TextView>(R.id.tv_item_developer)
-        val paradigm = findViewById<TextView>(R.id.tv_item_paradigm)
-        val detail = findViewById<TextView>(R.id.tv_item_detail)
-
-        photo.setImageResource(language.photo!!)
-        title = language.name ?: "Programming Language"
-        name.text = title
-        dev.text = language.developer
-        paradigm.text = language.paradigm
-        detail.text = language.detail
+        binding.apply {
+            imgItemPhoto.setImageResource(language.photo)
+            title = language.name
+            tvItemName.text = title
+            tvItemDeveloper.text = language.developer
+            tvItemParadigm.text = language.paradigm
+            tvItemDetail.text = language.detail
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setActionBar(title)
         Log.d(TAG, "finish")
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): DetailViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,36 +83,25 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
             R.id.action_favorite -> {
-                favStatus = when (favStatus) {
+                when (favStatus) {
                     false -> {
+                        Log.d(TAG, "start add fav")
+                        Log.d(TAG, "first $language")
                         lifecycleScope.launch(Dispatchers.IO) {
-                            favorite.apply {
-                                name = language.name!!
-                                paradigm = language.paradigm!!
-                                developer = language.developer!!
-                                detail = language.detail!!
-                                photo = language.photo!!
-                            }
-                            dao.insertAll(favorite)
+                            detailViewModel.insert(language)
                         }
+                        Log.d(TAG, "insert to dao")
                         item.setIcon(R.drawable.ic_selected_favorite_24)
                         Toast.makeText(
                             this,
                             "Liked $title",
                             Toast.LENGTH_SHORT
                         ).show()
-                        true
+                        favStatus = true
                     }
                     true -> {
                         lifecycleScope.launch(Dispatchers.IO) {
-                            favorite.apply {
-                                name = language.name!!
-                                paradigm = language.paradigm!!
-                                developer = language.developer!!
-                                detail = language.detail!!
-                                photo = language.photo!!
-                            }
-                            dao.delete(favorite.name)
+                            detailViewModel.delete(language)
                         }
                         Toast.makeText(
                             this,
@@ -108,7 +109,7 @@ class DetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         item.setIcon(R.drawable.ic_baseline_favorite_24)
-                        false
+                        favStatus = false
                     }
                 }
             }

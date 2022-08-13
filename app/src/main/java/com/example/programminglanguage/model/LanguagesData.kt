@@ -1,4 +1,6 @@
-package com.example.programminglanguage
+package com.example.programminglanguage.model
+
+import com.example.programminglanguage.R
 
 object LanguagesData {
     private val languageNames = arrayOf("C",
@@ -40,7 +42,8 @@ object LanguagesData {
         R.drawable.python,
         R.drawable.kotlin,
         R.drawable.swift,
-        R.drawable.dart)
+        R.drawable.dart
+    )
 
     private val languageParadigm = arrayOf("Multi-paradigm: imperative (procedural), structured.",
         "Multi-paradigm: generic, object-oriented (class-based), functional, imperative, reflective.",

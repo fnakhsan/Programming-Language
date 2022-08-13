@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.programminglanguage.model.Language
 
 class GridLanguageAdapter (private val listLanguage: ArrayList<Language>) :
     RecyclerView.Adapter<GridLanguageAdapter.GridViewHolder>() {
