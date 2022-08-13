@@ -24,7 +24,7 @@ class FavoriteRepository(application: Application) {
         }
     }
 
-    fun getAll(): LiveData<List<Language>> = mFavDao.getAll()
+    fun getAll(): List<Language> = mFavDao.getAll()
 
     fun update(Language: Language) {
         executorService.execute {

@@ -11,7 +11,7 @@ interface FavoriteDao {
     fun insert(favorite: Language)
 
     @Query("SELECT * FROM language")
-    fun getAll(): LiveData<List<Language>>
+    fun getAll(): List<Language>
 
     @Update
     fun update(favorite: Language)

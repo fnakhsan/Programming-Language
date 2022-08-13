@@ -10,6 +10,9 @@ class ViewModelFactory(private val mApplication: Any): ViewModelProvider.NewInst
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(mApplication as Application) as T
+            }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(mApplication as Application) as T
             }
