@@ -42,21 +42,6 @@ object LanguagesData {
         R.drawable.swift,
         R.drawable.dart)
 
-    val listData: ArrayList<Language>
-        get() {
-            val list = arrayListOf<Language>()
-            for (position in languageNames.indices) {
-                val language = Language()
-                language.name = languageNames[position]
-                language.developer = languageDeveloper[position]
-                language.paradigm = languageParadigm[position]
-                language.detail = languageDetails[position]
-                language.photo = languageImages[position]
-                list.add(language)
-            }
-            return list
-        }
-
     private val languageParadigm = arrayOf("Multi-paradigm: imperative (procedural), structured.",
         "Multi-paradigm: generic, object-oriented (class-based), functional, imperative, reflective.",
         "Multi-paradigm: procedural, functional, object-oriented, generic, modular.",
@@ -85,4 +70,18 @@ object LanguagesData {
         "Google"
     )
 
+    val listData: ArrayList<Language>
+        get() {
+            val list = arrayListOf<Language>()
+            for (position in languageNames.indices) {
+                val language = Language()
+                language.name = languageNames[position]
+                language.developer = languageDeveloper[position]
+                language.paradigm = languageParadigm[position]
+                language.detail = languageDetails[position]
+                language.photo = languageImages[position]
+                list.add(language)
+            }
+            return list
+        }
 }
