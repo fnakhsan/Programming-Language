@@ -3,23 +3,16 @@ package com.example.programminglanguage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-//import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.programminglanguage.databinding.ActivityMainBinding
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-//import kotlinx.coroutines.Dispatchers
-//import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
@@ -65,41 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//            var list: ArrayList<Language> = arrayListOf()
         when (item.itemId) {
-            R.id.action_get_favorite -> {
-                getFav = when (getFav) {
-                    false -> {
-                        mainViewModel.getAll().observe(this@MainActivity) {
-                            setMode(item.itemId, it as ArrayList<Language>)
-                            Log.d(TAG, "get room: $list")
-                        }
-//                            list = mainViewModel.getAll() as ArrayList<Language>
-                        item.setIcon(R.drawable.ic_selected_favorite_24)
-                        true
-                    }
-                    true -> {
-                        list.clear()
-                        list.addAll(LanguagesData.listData)
-                        setMode(item.itemId, list)
-                        Log.d(TAG, "remove room: $list")
-                        item.setIcon(R.drawable.ic_baseline_favorite_24)
-                        false
-                    }
-                }
-            }
-            R.id.action_profile -> {
-                val intent = Intent(this@MainActivity, AboutActivity::class.java)
-                startActivity(intent)
-            }
-        }
-        Log.d(TAG, "check list: $list")
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun setMode(selectedMode: Int, list: ArrayList<Language>) {
-        Log.d(TAG, "check list2: $list")
-        when (selectedMode) {
             R.id.action_list -> {
                 title = "Mode List"
                 showRecyclerList(list)
@@ -112,8 +71,71 @@ class MainActivity : AppCompatActivity() {
                 title = "Mode CardView"
                 showRecyclerCardView(list)
             }
+            R.id.action_profile -> {
+                val intent = Intent(this@MainActivity, AboutActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_get_favorite -> {
+                getFav = when (getFav) {
+                    false -> {
+                        when (title) {
+                            "Mode List" -> {
+                                mainViewModel.getAll().observe(this) {
+                                    if (it !== null) {
+                                        showRecyclerList(it as ArrayList<Language>)
+                                    }
+                                }
+                            }
+                            "Mode Grid" -> {
+                                mainViewModel.getAll().observe(this) {
+                                    if (it !== null) {
+                                        showRecyclerGrid(it as ArrayList<Language>)
+                                    }
+                                }
+                            }
+                            "Mode CardView" -> {
+                                mainViewModel.getAll().observe(this) {
+                                    if (it !== null) {
+                                        showRecyclerCardView(it as ArrayList<Language>)
+                                    }
+                                }
+                            }
+                        }
+                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        Toast.makeText(
+                            this,
+                            "Liked $title",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        getFav = true
+                        true
+                    }
+                    true -> {
+                        when (title) {
+                            "Mode List" -> {
+                                showRecyclerList(list)
+                            }
+                            "Mode Grid" -> {
+                                showRecyclerGrid(list)
+                            }
+                            "Mode CardView" -> {
+                                showRecyclerCardView(list)
+                            }
+                        }
+                        Toast.makeText(
+                            this,
+                            "Disliked $title",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        getFav = false
+                        false
+                    }
+                }
+            }
         }
         setActionBarTitle(title)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showRecyclerList(list: ArrayList<Language>) {
