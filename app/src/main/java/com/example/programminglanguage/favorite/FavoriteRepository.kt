@@ -1,7 +1,8 @@
-package com.example.programminglanguage.Language
+package com.example.programminglanguage.favorite
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+//import androidx.lifecycle.LiveData
 import com.example.programminglanguage.favorite.FavoriteDao
 import com.example.programminglanguage.favorite.FavoriteDatabase
 //import com.example.programminglanguage.model.Favorite
@@ -24,7 +25,7 @@ class FavoriteRepository(application: Application) {
         }
     }
 
-    fun getAll(): List<Language> = mFavDao.getAll()
+    fun getAll(): LiveData<List<Language>> = mFavDao.getAll()
 
     fun update(Language: Language) {
         executorService.execute {

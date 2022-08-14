@@ -3,10 +3,12 @@ package com.example.programminglanguage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 //import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.programminglanguage.databinding.ActivityMainBinding
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 //import kotlinx.coroutines.Dispatchers
 //import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
@@ -25,8 +29,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
 
     private lateinit var rvLanguages: RecyclerView
-    private var list: ArrayList<Language> = arrayListOf()
-//    private var favoriteList: ArrayList<Favorite> = arrayListOf()
+    private val list: ArrayList<Language> = arrayListOf()
+
+    //    private var favoriteList: ArrayList<Favorite> = arrayListOf()
     private var getFav: Boolean = false
     private var title: String = "Mode List"
 
@@ -47,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         list.addAll(LanguagesData.listData)
         setActionBarTitle(title)
         showRecyclerList(list)
-
     }
 
     private fun obtainViewModel(activity: AppCompatActivity): MainViewModel {
@@ -61,8 +65,55 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        setMode(item.itemId)
+//            var list: ArrayList<Language> = arrayListOf()
+        when (item.itemId) {
+            R.id.action_get_favorite -> {
+                getFav = when (getFav) {
+                    false -> {
+                        mainViewModel.getAll().observe(this@MainActivity) {
+                            setMode(item.itemId, it as ArrayList<Language>)
+                            Log.d(TAG, "get room: $list")
+                        }
+//                            list = mainViewModel.getAll() as ArrayList<Language>
+                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        true
+                    }
+                    true -> {
+                        list.clear()
+                        list.addAll(LanguagesData.listData)
+                        setMode(item.itemId, list)
+                        Log.d(TAG, "remove room: $list")
+                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        false
+                    }
+                }
+            }
+            R.id.action_profile -> {
+                val intent = Intent(this@MainActivity, AboutActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        Log.d(TAG, "check list: $list")
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setMode(selectedMode: Int, list: ArrayList<Language>) {
+        Log.d(TAG, "check list2: $list")
+        when (selectedMode) {
+            R.id.action_list -> {
+                title = "Mode List"
+                showRecyclerList(list)
+            }
+            R.id.action_grid -> {
+                title = "Mode Grid"
+                showRecyclerGrid(list)
+            }
+            R.id.action_cardview -> {
+                title = "Mode CardView"
+                showRecyclerCardView(list)
+            }
+        }
+        setActionBarTitle(title)
     }
 
     private fun showRecyclerList(list: ArrayList<Language>) {
@@ -106,55 +157,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setActionBarTitle(title: String) {
         supportActionBar?.title = title
-    }
-
-    private fun setMode(selectedMode: Int) {
-        when (selectedMode){
-            R.id.action_get_favorite -> {
-                getFav = when(getFav){
-                    false -> {
-                        list = mainViewModel.getAll() as ArrayList<Language>
-                        when(selectedMode){
-                            R.id.action_list -> {
-                                title = "Mode List"
-                                showRecyclerList(list)
-                            }
-                            R.id.action_grid -> {
-                                title = "Mode Grid"
-                                showRecyclerGrid(list)
-                            }
-                            R.id.action_cardview -> {
-                                title = "Mode CardView"
-                                showRecyclerCardView(list)
-                            }
-                        }
-                        true
-                    }
-                    true -> {
-                        when(selectedMode){
-                            R.id.action_list -> {
-                                title = "Mode List"
-                                showRecyclerList(list)
-                            }
-                            R.id.action_grid -> {
-                                title = "Mode Grid"
-                                showRecyclerGrid(list)
-                            }
-                            R.id.action_cardview -> {
-                                title = "Mode CardView"
-                                showRecyclerCardView(list)
-                            }
-                        }
-                        false
-                    }
-                }
-            }
-            R.id.action_profile -> {
-                val intent = Intent(this, AboutActivity::class.java)
-                startActivity(intent)
-            }
-        }
-        setActionBarTitle(title)
     }
 
     private fun showSelectedLanguage(language: Language) {

@@ -3,7 +3,7 @@ package com.example.programminglanguage
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.programminglanguage.Language.FavoriteRepository
+import com.example.programminglanguage.favorite.FavoriteRepository
 //import com.example.programminglanguage.model.Favorite
 import com.example.programminglanguage.model.Language
 import kotlinx.coroutines.Dispatchers
