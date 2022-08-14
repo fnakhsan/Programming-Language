@@ -3,8 +3,6 @@ package com.example.programminglanguage.favorite
 import android.app.Application
 import androidx.lifecycle.LiveData
 //import androidx.lifecycle.LiveData
-import com.example.programminglanguage.favorite.FavoriteDao
-import com.example.programminglanguage.favorite.FavoriteDatabase
 //import com.example.programminglanguage.model.Favorite
 import com.example.programminglanguage.model.Language
 import java.util.concurrent.ExecutorService
@@ -26,6 +24,8 @@ class FavoriteRepository(application: Application) {
     }
 
     fun getAll(): LiveData<List<Language>> = mFavDao.getAll()
+
+    fun countFav(name: String): Int = mFavDao.countFav(name)
 
     fun update(Language: Language) {
         executorService.execute {

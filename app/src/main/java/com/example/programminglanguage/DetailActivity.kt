@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,9 +19,6 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var title: String
     private lateinit var language: Language
-//    private lateinit var favorite: Language
-
-    //    private lateinit var dao: FavoriteDao
     private var favStatus: Boolean = false
 
     private var _binding: ActivityDetailBinding? = null
@@ -33,10 +28,11 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.d(TAG, "start activity")
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         detailViewModel = obtainViewModel(this@DetailActivity)
-
+        Log.d(TAG, "finish obtain viewmodel")
         language = intent.getParcelableExtra(EXTRA_LANGUAGE)!!
         Log.d(TAG, "$language")
 
@@ -60,13 +56,24 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        Log.d(TAG, "start onCreateOptionsMenu")
         menuInflater.inflate(R.menu.menu_detail, menu)
-        Log.d(TAG, "finish onCreateOptionsMenu")
+        lifecycleScope.launch(Dispatchers.IO){
+            val fav = menu?.findItem(R.id.action_favorite)
+            favStatus = detailViewModel.isFavorite(language.name)
+            when(favStatus) {
+                true -> {
+                    fav?.setIcon(R.drawable.ic_selected_favorite_24)
+                }
+                false -> {
+                    fav?.setIcon(R.drawable.ic_baseline_favorite_24)
+                }
+            }
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d(TAG, "first $favStatus")
         when (item.itemId) {
             R.id.action_share -> {
                 Toast.makeText(
@@ -91,13 +98,15 @@ class DetailActivity : AppCompatActivity() {
                             detailViewModel.insert(language)
                         }
                         Log.d(TAG, "insert to dao")
-                        item.setIcon(R.drawable.ic_selected_favorite_24)
                         Toast.makeText(
                             this,
                             "Liked $title",
                             Toast.LENGTH_SHORT
                         ).show()
+                        Log.d(TAG, "when button off $favStatus")
+                        item.setIcon(R.drawable.ic_selected_favorite_24)
                         favStatus = true
+                        Log.d(TAG, "when button off $favStatus")
                     }
                     true -> {
                         lifecycleScope.launch(Dispatchers.IO) {
@@ -109,6 +118,7 @@ class DetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        Log.d(TAG, "when button on $favStatus")
                         favStatus = false
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.programminglanguage
+package com.example.programminglanguage.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.programminglanguage.R
 import com.example.programminglanguage.model.Language
 
 class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :

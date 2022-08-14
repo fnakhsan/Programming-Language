@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.programminglanguage.adapter.CardViewLanguageAdapter
+import com.example.programminglanguage.adapter.GridLanguageAdapter
+import com.example.programminglanguage.adapter.ListLanguageAdapter
 import com.example.programminglanguage.databinding.ActivityMainBinding
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
@@ -24,16 +27,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rvLanguages: RecyclerView
     private val list: ArrayList<Language> = arrayListOf()
 
-    //    private var favoriteList: ArrayList<Favorite> = arrayListOf()
     private var getFav: Boolean = false
     private var title: String = "Mode List"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val dao: FavoriteDao = FavoriteDatabase.getInstance(this).favoriteDao
-//        lifecycleScope.launch(Dispatchers.IO){
-//            favoriteList = dao.getAll() as ArrayList<Favorite>
-//        }
         setTheme(R.style.Theme_ProgrammingLanguage)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

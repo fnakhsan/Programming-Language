@@ -1,4 +1,4 @@
-package com.example.programminglanguage
+package com.example.programminglanguage.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.programminglanguage.R
 import com.example.programminglanguage.model.Language
 
 class ListLanguageAdapter (private val listLanguage: ArrayList<Language>) :
