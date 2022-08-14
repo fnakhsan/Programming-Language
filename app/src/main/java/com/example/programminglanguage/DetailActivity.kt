@@ -57,10 +57,10 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_detail, menu)
-        lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
             val fav = menu?.findItem(R.id.action_favorite)
             favStatus = detailViewModel.isFavorite(language.name)
-            when(favStatus) {
+            when (favStatus) {
                 true -> {
                     fav?.setIcon(R.drawable.ic_selected_favorite_24)
                 }
@@ -73,7 +73,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d(TAG, "first $favStatus")
         when (item.itemId) {
             R.id.action_share -> {
                 Toast.makeText(
@@ -92,34 +91,28 @@ class DetailActivity : AppCompatActivity() {
             R.id.action_favorite -> {
                 when (favStatus) {
                     false -> {
-                        Log.d(TAG, "start add fav")
-                        Log.d(TAG, "first $language")
                         lifecycleScope.launch(Dispatchers.IO) {
                             detailViewModel.insert(language)
                         }
-                        Log.d(TAG, "insert to dao")
+                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        favStatus = true
                         Toast.makeText(
                             this,
                             "Liked $title",
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.d(TAG, "when button off $favStatus")
-                        item.setIcon(R.drawable.ic_selected_favorite_24)
-                        favStatus = true
-                        Log.d(TAG, "when button off $favStatus")
                     }
                     true -> {
                         lifecycleScope.launch(Dispatchers.IO) {
                             detailViewModel.delete(language)
                         }
+                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        favStatus = false
                         Toast.makeText(
                             this,
                             "Disliked $title",
                             Toast.LENGTH_SHORT
                         ).show()
-                        item.setIcon(R.drawable.ic_baseline_favorite_24)
-                        Log.d(TAG, "when button on $favStatus")
-                        favStatus = false
                     }
                 }
             }
@@ -128,9 +121,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setActionBar(title: String) {
-        Log.d(TAG, "start setActionBar")
         supportActionBar?.title = title
-        Log.d(TAG, "finish setActionBar")
     }
 
     companion object {

@@ -3,10 +3,12 @@ package com.example.programminglanguage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +18,7 @@ import com.example.programminglanguage.adapter.ListLanguageAdapter
 import com.example.programminglanguage.databinding.ActivityMainBinding
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
+import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         rvLanguages = findViewById(R.id.rv_languages)
         rvLanguages.setHasFixedSize(true)
 
+        Log.d(TAG, "start main $getFav")
         list.addAll(LanguagesData.listData)
         setActionBarTitle(title)
         showRecyclerList(list)
@@ -52,6 +56,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        Log.d(TAG, "start onCreate Menu $getFav")
+//        val fav = menu?.findItem(R.id.action_favorite)
+//        when (getFav) {
+//            true -> {
+//                fav?.setIcon(R.drawable.ic_selected_favorite_24)
+//            }
+//            false -> {
+//                fav?.setIcon(R.drawable.ic_baseline_favorite_24)
+//            }
+//        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -72,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showFav(item: MenuItem, isFav: Boolean, title: String, list: ArrayList<Language>) {
+    private fun showFav(title: String, list: ArrayList<Language>) {
         when (title) {
             "Mode List" -> {
                 showRecyclerList(list)
@@ -82,26 +96,6 @@ class MainActivity : AppCompatActivity() {
             }
             "Mode CardView" -> {
                 showRecyclerCardView(list)
-            }
-        }
-        when(isFav) {
-            false -> {
-                item.setIcon(R.drawable.ic_selected_favorite_24)
-                Toast.makeText(
-                    this,
-                    "Show Favorite in $title",
-                    Toast.LENGTH_SHORT
-                ).show()
-                getFav = true
-            }
-            true -> {
-                item.setIcon(R.drawable.ic_baseline_favorite_24)
-                Toast.makeText(
-                    this,
-                    title,
-                    Toast.LENGTH_SHORT
-                ).show()
-                getFav = false
             }
         }
     }
@@ -120,11 +114,20 @@ class MainActivity : AppCompatActivity() {
                         setMode(R.id.action_cardview, list)
                     }
                     R.id.action_get_favorite -> {
+                        Log.d(TAG, "Fav pressed")
                         mainViewModel.getAll().observe(this) {
-                            if (it !== null) {
-                                showFav(item, getFav, title, it as ArrayList<Language>)
+                            if (it != null) {
+                                Log.d(TAG, "Fav triggered")
+                                showFav(title, it as ArrayList<Language>)
                             }
                         }
+                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        getFav = true
+                        Toast.makeText(
+                            this,
+                            "Show Favorite in $title",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -132,27 +135,38 @@ class MainActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.action_list -> {
                         mainViewModel.getAll().observe(this) {
-                            if (it !== null) {
+                            if (it != null) {
+                                Log.d(TAG, "Fav list triggered")
                                 setMode(R.id.action_list, it as ArrayList<Language>)
                             }
                         }
                     }
                     R.id.action_grid -> {
                         mainViewModel.getAll().observe(this) {
-                            if (it !== null) {
+                            if (it != null) {
+                                Log.d(TAG, "Fav grid triggered")
                                 setMode(R.id.action_grid, it as ArrayList<Language>)
                             }
                         }
                     }
                     R.id.action_cardview -> {
                         mainViewModel.getAll().observe(this) {
-                            if (it !== null) {
+                            if (it != null) {
+                                Log.d(TAG, "Fav cardview triggered")
                                 setMode(R.id.action_cardview, it as ArrayList<Language>)
                             }
                         }
                     }
                     R.id.action_get_favorite -> {
-                        showFav(item, getFav, title, list)
+                        Log.d(TAG, "Fav unpressed")
+                        showFav(title, list)
+                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        getFav = false
+                        Toast.makeText(
+                            this,
+                            title,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
