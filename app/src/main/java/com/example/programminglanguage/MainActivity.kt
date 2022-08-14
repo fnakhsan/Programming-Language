@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+    private fun setMode(item: Int, list: ArrayList<Language>) {
+        when (item) {
             R.id.action_list -> {
                 title = "Mode List"
                 showRecyclerList(list)
@@ -71,68 +71,97 @@ class MainActivity : AppCompatActivity() {
                 title = "Mode CardView"
                 showRecyclerCardView(list)
             }
-            R.id.action_profile -> {
-                val intent = Intent(this@MainActivity, AboutActivity::class.java)
-                startActivity(intent)
+        }
+    }
+
+    private fun showFav(item: MenuItem, isFav: Boolean, title: String, list: ArrayList<Language>) {
+        when (title) {
+            "Mode List" -> {
+                showRecyclerList(list)
             }
-            R.id.action_get_favorite -> {
-                getFav = when (getFav) {
-                    false -> {
-                        when (title) {
-                            "Mode List" -> {
-                                mainViewModel.getAll().observe(this) {
-                                    if (it !== null) {
-                                        showRecyclerList(it as ArrayList<Language>)
-                                    }
-                                }
-                            }
-                            "Mode Grid" -> {
-                                mainViewModel.getAll().observe(this) {
-                                    if (it !== null) {
-                                        showRecyclerGrid(it as ArrayList<Language>)
-                                    }
-                                }
-                            }
-                            "Mode CardView" -> {
-                                mainViewModel.getAll().observe(this) {
-                                    if (it !== null) {
-                                        showRecyclerCardView(it as ArrayList<Language>)
-                                    }
-                                }
-                            }
-                        }
-                        item.setIcon(R.drawable.ic_selected_favorite_24)
-                        Toast.makeText(
-                            this,
-                            "Liked $title",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        getFav = true
-                        true
+            "Mode Grid" -> {
+                showRecyclerGrid(list)
+            }
+            "Mode CardView" -> {
+                showRecyclerCardView(list)
+            }
+        }
+        when(isFav) {
+            false -> {
+                item.setIcon(R.drawable.ic_selected_favorite_24)
+                Toast.makeText(
+                    this,
+                    "Show Favorite in $title",
+                    Toast.LENGTH_SHORT
+                ).show()
+                getFav = true
+            }
+            true -> {
+                item.setIcon(R.drawable.ic_baseline_favorite_24)
+                Toast.makeText(
+                    this,
+                    title,
+                    Toast.LENGTH_SHORT
+                ).show()
+                getFav = false
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (getFav) {
+            false -> {
+                when (item.itemId) {
+                    R.id.action_list -> {
+                        setMode(R.id.action_list, list)
                     }
-                    true -> {
-                        when (title) {
-                            "Mode List" -> {
-                                showRecyclerList(list)
-                            }
-                            "Mode Grid" -> {
-                                showRecyclerGrid(list)
-                            }
-                            "Mode CardView" -> {
-                                showRecyclerCardView(list)
+                    R.id.action_grid -> {
+                        setMode(R.id.action_grid, list)
+                    }
+                    R.id.action_cardview -> {
+                        setMode(R.id.action_cardview, list)
+                    }
+                    R.id.action_get_favorite -> {
+                        mainViewModel.getAll().observe(this) {
+                            if (it !== null) {
+                                showFav(item, getFav, title, it as ArrayList<Language>)
                             }
                         }
-                        Toast.makeText(
-                            this,
-                            "Disliked $title",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        item.setIcon(R.drawable.ic_baseline_favorite_24)
-                        getFav = false
-                        false
                     }
                 }
             }
+            true -> {
+                when (item.itemId) {
+                    R.id.action_list -> {
+                        mainViewModel.getAll().observe(this) {
+                            if (it !== null) {
+                                setMode(R.id.action_list, it as ArrayList<Language>)
+                            }
+                        }
+                    }
+                    R.id.action_grid -> {
+                        mainViewModel.getAll().observe(this) {
+                            if (it !== null) {
+                                setMode(R.id.action_grid, it as ArrayList<Language>)
+                            }
+                        }
+                    }
+                    R.id.action_cardview -> {
+                        mainViewModel.getAll().observe(this) {
+                            if (it !== null) {
+                                setMode(R.id.action_cardview, it as ArrayList<Language>)
+                            }
+                        }
+                    }
+                    R.id.action_get_favorite -> {
+                        showFav(item, getFav, title, list)
+                    }
+                }
+            }
+        }
+        if (item.itemId == R.id.action_profile) {
+            val intent = Intent(this@MainActivity, AboutActivity::class.java)
+            startActivity(intent)
         }
         setActionBarTitle(title)
         return super.onOptionsItemSelected(item)
