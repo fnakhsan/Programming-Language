@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.programminglanguage">
 
     <application
@@ -9,22 +10,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProgrammingLanguage"
-        android:fullBackupContent="true">
+        android:fullBackupContent="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        tools:targetApi="s">
         <activity android:name=".AboutActivity"
-            android:parentActivityName="com.example.programminglanguage.MainActivity">
+            android:parentActivityName="com.example.programminglanguage.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.programminglanguage.MainActivity" />
+                android:value="com.example.programminglanguage.main.MainActivity" />
         </activity>
-        <activity android:name=".DetailActivity"
-            android:parentActivityName="com.example.programminglanguage.MainActivity">
+        <activity android:name=".detail.DetailActivity"
+            android:parentActivityName="com.example.programminglanguage.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.programminglanguage.MainActivity"/>
+                android:value="com.example.programminglanguage.main.MainActivity"/>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name=".main.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

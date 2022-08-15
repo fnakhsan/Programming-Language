@@ -1,4 +1,6 @@
-package com.example.programminglanguage
+package com.example.programminglanguage.model
+
+import com.example.programminglanguage.R
 
 object LanguagesData {
     private val languageNames = arrayOf("C",
@@ -40,22 +42,8 @@ object LanguagesData {
         R.drawable.python,
         R.drawable.kotlin,
         R.drawable.swift,
-        R.drawable.dart)
-
-    val listData: ArrayList<Language>
-        get() {
-            val list = arrayListOf<Language>()
-            for (position in languageNames.indices) {
-                val language = Language()
-                language.name = languageNames[position]
-                language.developer = languageDeveloper[position]
-                language.paradigm = languageParadigm[position]
-                language.detail = languageDetails[position]
-                language.photo = languageImages[position]
-                list.add(language)
-            }
-            return list
-        }
+        R.drawable.dart
+    )
 
     private val languageParadigm = arrayOf("Multi-paradigm: imperative (procedural), structured.",
         "Multi-paradigm: generic, object-oriented (class-based), functional, imperative, reflective.",
@@ -85,4 +73,18 @@ object LanguagesData {
         "Google"
     )
 
+    val listData: ArrayList<Language>
+        get() {
+            val list = arrayListOf<Language>()
+            for (position in languageNames.indices) {
+                val language = Language()
+                language.name = languageNames[position]
+                language.developer = languageDeveloper[position]
+                language.paradigm = languageParadigm[position]
+                language.detail = languageDetails[position]
+                language.photo = languageImages[position]
+                list.add(language)
+            }
+            return list
+        }
 }

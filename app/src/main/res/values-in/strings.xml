@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ProgrammingLanguage</string>
-    <string name="language_name">Programming Language Name</string>
+    <string name="language_name">Nama Bahasa Pemrograman</string>
     <string name="detail">Detail</string>
     <string name="list">List</string>
     <string name="grid">Grid</string>
@@ -12,5 +13,5 @@
     <string name="about">About</string>
     <string name="username">Fatkhi Nur Akhsan</string>
     <string name="email">fatkhinurakhsan@gmail.com</string>
-    <string name="toast">You choose</string>
+    <string name="toast">Kamu Memilih</string>
 </resources>
