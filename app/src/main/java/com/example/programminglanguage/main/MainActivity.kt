@@ -1,4 +1,4 @@
-package com.example.programminglanguage
+package com.example.programminglanguage.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,10 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.programminglanguage.AboutActivity
+import com.example.programminglanguage.R
+import com.example.programminglanguage.ViewModelFactory
 import com.example.programminglanguage.adapter.CardViewLanguageAdapter
 import com.example.programminglanguage.adapter.GridLanguageAdapter
 import com.example.programminglanguage.adapter.ListLanguageAdapter
 import com.example.programminglanguage.databinding.ActivityMainBinding
+import com.example.programminglanguage.detail.DetailActivity
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
 import kotlin.collections.ArrayList

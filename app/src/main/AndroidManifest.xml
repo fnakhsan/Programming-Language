@@ -14,18 +14,18 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         tools:targetApi="s">
         <activity android:name=".AboutActivity"
-            android:parentActivityName="com.example.programminglanguage.MainActivity">
+            android:parentActivityName="com.example.programminglanguage.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.programminglanguage.MainActivity" />
+                android:value="com.example.programminglanguage.main.MainActivity" />
         </activity>
-        <activity android:name=".DetailActivity"
-            android:parentActivityName="com.example.programminglanguage.MainActivity">
+        <activity android:name=".detail.DetailActivity"
+            android:parentActivityName="com.example.programminglanguage.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.programminglanguage.MainActivity"/>
+                android:value="com.example.programminglanguage.main.MainActivity"/>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name=".main.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:theme="@style/SplashScreen">

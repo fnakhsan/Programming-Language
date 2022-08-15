@@ -3,6 +3,8 @@ package com.example.programminglanguage
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.programminglanguage.detail.DetailViewModel
+import com.example.programminglanguage.main.MainViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(private val mApplication: Any): ViewModelProvider.NewInstanceFactory() {

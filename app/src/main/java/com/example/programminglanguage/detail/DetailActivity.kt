@@ -1,4 +1,4 @@
-package com.example.programminglanguage
+package com.example.programminglanguage.detail
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.programminglanguage.R
+import com.example.programminglanguage.ViewModelFactory
 import com.example.programminglanguage.databinding.ActivityDetailBinding
 //import com.example.programminglanguage.model.Favorite
 import com.example.programminglanguage.model.Language

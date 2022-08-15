@@ -1,4 +1,4 @@
-package com.example.programminglanguage
+package com.example.programminglanguage.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
