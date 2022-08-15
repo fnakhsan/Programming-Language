@@ -3,7 +3,6 @@ package com.example.programminglanguage.detail
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -12,31 +11,26 @@ import androidx.lifecycle.lifecycleScope
 import com.example.programminglanguage.R
 import com.example.programminglanguage.ViewModelFactory
 import com.example.programminglanguage.databinding.ActivityDetailBinding
-//import com.example.programminglanguage.model.Favorite
 import com.example.programminglanguage.model.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
+    private var _binding: ActivityDetailBinding? = null
+    private val binding get() = _binding as ActivityDetailBinding
+    private lateinit var detailViewModel: DetailViewModel
 
     private lateinit var title: String
     private lateinit var language: Language
     private var favStatus: Boolean = false
 
-    private var _binding: ActivityDetailBinding? = null
-    private val binding get() = _binding as ActivityDetailBinding
-    private lateinit var detailViewModel: DetailViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.d(TAG, "start activity")
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        detailViewModel = obtainViewModel(this@DetailActivity)
-        Log.d(TAG, "finish obtain viewmodel")
+
         language = intent.getParcelableExtra(EXTRA_LANGUAGE)!!
-        Log.d(TAG, "$language")
+        detailViewModel = obtainViewModel(this@DetailActivity)
 
         binding.apply {
             imgItemPhoto.setImageResource(language.photo)
@@ -49,12 +43,6 @@ class DetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setActionBar(title)
-        Log.d(TAG, "finish")
-    }
-
-    private fun obtainViewModel(activity: AppCompatActivity): DetailViewModel {
-        val factory = ViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -122,12 +110,16 @@ class DetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun obtainViewModel(activity: AppCompatActivity): DetailViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
+    }
+
     private fun setActionBar(title: String) {
         supportActionBar?.title = title
     }
 
     companion object {
         const val EXTRA_LANGUAGE = "extra_language"
-        const val TAG = "detail"
     }
 }

@@ -3,11 +3,11 @@ package com.example.programminglanguage.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +21,8 @@ import com.example.programminglanguage.databinding.ActivityMainBinding
 import com.example.programminglanguage.detail.DetailActivity
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
@@ -37,69 +39,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch(Dispatchers.IO){
+            list.addAll(LanguagesData.listData)
+        }
+        mainViewModel = obtainViewModel(this@MainActivity)
+
         setTheme(R.style.Theme_ProgrammingLanguage)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mainViewModel = obtainViewModel(this@MainActivity)
 
         rvLanguages = findViewById(R.id.rv_languages)
         rvLanguages.setHasFixedSize(true)
 
-        Log.d(TAG, "start main $getFav")
-        list.addAll(LanguagesData.listData)
         setActionBarTitle(title)
         showRecyclerList(list)
     }
 
-    private fun obtainViewModel(activity: AppCompatActivity): MainViewModel {
-        val factory = ViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory)[MainViewModel::class.java]
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        Log.d(TAG, "start onCreate Menu $getFav")
-//        val fav = menu?.findItem(R.id.action_favorite)
-//        when (getFav) {
-//            true -> {
-//                fav?.setIcon(R.drawable.ic_selected_favorite_24)
-//            }
-//            false -> {
-//                fav?.setIcon(R.drawable.ic_baseline_favorite_24)
-//            }
-//        }
         return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun setMode(item: Int, list: ArrayList<Language>) {
-        when (item) {
-            R.id.action_list -> {
-                title = "Mode List"
-                showRecyclerList(list)
-            }
-            R.id.action_grid -> {
-                title = "Mode Grid"
-                showRecyclerGrid(list)
-            }
-            R.id.action_cardview -> {
-                title = "Mode CardView"
-                showRecyclerCardView(list)
-            }
-        }
-    }
-
-    private fun showFav(title: String, list: ArrayList<Language>) {
-        when (title) {
-            "Mode List" -> {
-                showRecyclerList(list)
-            }
-            "Mode Grid" -> {
-                showRecyclerGrid(list)
-            }
-            "Mode CardView" -> {
-                showRecyclerCardView(list)
-            }
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -107,21 +65,22 @@ class MainActivity : AppCompatActivity() {
             false -> {
                 when (item.itemId) {
                     R.id.action_list -> {
+                        title = "Mode List"
                         setMode(R.id.action_list, list)
                     }
                     R.id.action_grid -> {
+                        title = "Mode Grid"
                         setMode(R.id.action_grid, list)
                     }
                     R.id.action_cardview -> {
+                        title = "Mode CardView"
                         setMode(R.id.action_cardview, list)
                     }
                     R.id.action_get_favorite -> {
-                        Log.d(TAG, "Fav pressed")
                         getFav = true
                         mainViewModel.getAll().observe(this) {
                             if (getFav){
                                 if (it != null) {
-                                    Log.d(TAG, "Fav triggered")
                                     showFav(title, it as ArrayList<Language>)
                                 }
                                 item.setIcon(R.drawable.ic_selected_favorite_24)
@@ -145,40 +104,39 @@ class MainActivity : AppCompatActivity() {
                         mainViewModel.getAll().observe(this) {
                             if (getFav){
                                 if (it != null) {
-                                    Log.d(TAG, "Fav list triggered")
                                     setMode(R.id.action_list, it as ArrayList<Language>)
                                 }
                             } else {
                                 setMode(R.id.action_list, list)
                             }
                         }
+                        title = "Mode List"
                     }
                     R.id.action_grid -> {
                         mainViewModel.getAll().observe(this) {
                             if (getFav){
                                 if (it != null) {
-                                    Log.d(TAG, "Fav grid triggered")
                                     setMode(R.id.action_grid, it as ArrayList<Language>)
                                 }
                             } else {
                                 setMode(R.id.action_grid, list)
                             }
                         }
+                        title = "Mode Grid"
                     }
                     R.id.action_cardview -> {
                         mainViewModel.getAll().observe(this) {
                             if (getFav){
                                 if (it != null) {
-                                    Log.d(TAG, "Fav cardview triggered")
                                     setMode(R.id.action_cardview, it as ArrayList<Language>)
                                 }
                             } else {
                                 setMode(R.id.action_cardview, list)
                             }
                         }
+                        title = "Mode CardView"
                     }
                     R.id.action_get_favorite -> {
-                        Log.d(TAG, "Fav unpressed")
                         showFav(title, list)
                         item.setIcon(R.drawable.ic_baseline_favorite_24)
                         getFav = false
@@ -197,6 +155,39 @@ class MainActivity : AppCompatActivity() {
         }
         setActionBarTitle(title)
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): MainViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[MainViewModel::class.java]
+    }
+
+    private fun setMode(item: Int, list: ArrayList<Language>) {
+        when (item) {
+            R.id.action_list -> {
+                showRecyclerList(list)
+            }
+            R.id.action_grid -> {
+                showRecyclerGrid(list)
+            }
+            R.id.action_cardview -> {
+                showRecyclerCardView(list)
+            }
+        }
+    }
+
+    private fun showFav(title: String, list: ArrayList<Language>) {
+        when (title) {
+            "Mode List" -> {
+                showRecyclerList(list)
+            }
+            "Mode Grid" -> {
+                showRecyclerGrid(list)
+            }
+            "Mode CardView" -> {
+                showRecyclerCardView(list)
+            }
+        }
     }
 
     private fun showRecyclerList(list: ArrayList<Language>) {
@@ -248,9 +239,5 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("extra_language", language)
         startActivity(intent)
-    }
-
-    companion object {
-        const val TAG = "main"
     }
 }
