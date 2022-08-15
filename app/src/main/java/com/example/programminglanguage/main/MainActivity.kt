@@ -22,6 +22,7 @@ import com.example.programminglanguage.detail.DetailActivity
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
@@ -32,18 +33,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
 
     private lateinit var rvLanguages: RecyclerView
-    private val list: ArrayList<Language> = arrayListOf()
+    private var list: ArrayList<Language> = LanguagesData.listData
 
     private var getFav: Boolean = false
     private var title: String = "Mode List"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycleScope.launch(Dispatchers.IO){
-            list.addAll(LanguagesData.listData)
-        }
         mainViewModel = obtainViewModel(this@MainActivity)
-
         setTheme(R.style.Theme_ProgrammingLanguage)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -53,6 +50,36 @@ class MainActivity : AppCompatActivity() {
 
         setActionBarTitle(title)
         showRecyclerList(list)
+        mainViewModel.getAllChanges().observe(this) {
+            when (getFav) {
+                true -> {
+                    when (title) {
+                        "Mode List" -> {
+                            showRecyclerList(it as ArrayList<Language>)
+                        }
+                        "Mode Grid" -> {
+                            showRecyclerGrid(it as ArrayList<Language>)
+                        }
+                        "Mode CardView" -> {
+                            showRecyclerCardView(it as ArrayList<Language>)
+                        }
+                    }
+                }
+                false -> {
+                    when (title) {
+                        "Mode List" -> {
+                            showRecyclerList(list)
+                        }
+                        "Mode Grid" -> {
+                            showRecyclerGrid(list)
+                        }
+                        "Mode CardView" -> {
+                            showRecyclerCardView(list)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -62,6 +89,38 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (getFav) {
+            true -> {
+                when (item.itemId) {
+                    R.id.action_list -> {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            showRecyclerList(mainViewModel.getAll() as ArrayList<Language>)
+                        }
+                        title = "Mode List"
+                    }
+                    R.id.action_grid -> {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            showRecyclerGrid(mainViewModel.getAll() as ArrayList<Language>)
+                        }
+                        title = "Mode Grid"
+                    }
+                    R.id.action_cardview -> {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            showRecyclerCardView(mainViewModel.getAll() as ArrayList<Language>)
+                        }
+                        title = "Mode CardView"
+                    }
+                    R.id.action_get_favorite -> {
+                        showFav(title, list)
+                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        getFav = false
+                        Toast.makeText(
+                            this,
+                            title,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
             false -> {
                 when (item.itemId) {
                     R.id.action_list -> {
@@ -77,72 +136,14 @@ class MainActivity : AppCompatActivity() {
                         setMode(R.id.action_cardview, list)
                     }
                     R.id.action_get_favorite -> {
-                        getFav = true
-                        mainViewModel.getAll().observe(this) {
-                            if (getFav){
-                                if (it != null) {
-                                    showFav(title, it as ArrayList<Language>)
-                                }
-                                item.setIcon(R.drawable.ic_selected_favorite_24)
-
-                            } else {
-                                showFav(title, list)
-                                item.setIcon(R.drawable.ic_baseline_favorite_24)
-                            }
+                        lifecycleScope.launch(Dispatchers.Main){
+                            showFav(title, mainViewModel.getAll() as ArrayList<Language>)
                         }
+                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        getFav = true
                         Toast.makeText(
                             this,
                             "Show Favorite in $title",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-            true -> {
-                when (item.itemId) {
-                    R.id.action_list -> {
-                        mainViewModel.getAll().observe(this) {
-                            if (getFav){
-                                if (it != null) {
-                                    setMode(R.id.action_list, it as ArrayList<Language>)
-                                }
-                            } else {
-                                setMode(R.id.action_list, list)
-                            }
-                        }
-                        title = "Mode List"
-                    }
-                    R.id.action_grid -> {
-                        mainViewModel.getAll().observe(this) {
-                            if (getFav){
-                                if (it != null) {
-                                    setMode(R.id.action_grid, it as ArrayList<Language>)
-                                }
-                            } else {
-                                setMode(R.id.action_grid, list)
-                            }
-                        }
-                        title = "Mode Grid"
-                    }
-                    R.id.action_cardview -> {
-                        mainViewModel.getAll().observe(this) {
-                            if (getFav){
-                                if (it != null) {
-                                    setMode(R.id.action_cardview, it as ArrayList<Language>)
-                                }
-                            } else {
-                                setMode(R.id.action_cardview, list)
-                            }
-                        }
-                        title = "Mode CardView"
-                    }
-                    R.id.action_get_favorite -> {
-                        showFav(title, list)
-                        item.setIcon(R.drawable.ic_baseline_favorite_24)
-                        getFav = false
-                        Toast.makeText(
-                            this,
-                            title,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -177,56 +178,64 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showFav(title: String, list: ArrayList<Language>) {
-        when (title) {
-            "Mode List" -> {
-                showRecyclerList(list)
-            }
-            "Mode Grid" -> {
-                showRecyclerGrid(list)
-            }
-            "Mode CardView" -> {
-                showRecyclerCardView(list)
+        lifecycleScope.launch(Dispatchers.Main){
+            when (title) {
+                "Mode List" -> {
+                    showRecyclerList(list)
+                }
+                "Mode Grid" -> {
+                    showRecyclerGrid(list)
+                }
+                "Mode CardView" -> {
+                    showRecyclerCardView(list)
+                }
             }
         }
     }
 
     private fun showRecyclerList(list: ArrayList<Language>) {
-        rvLanguages.layoutManager = LinearLayoutManager(this)
-        val listLanguageAdapter = ListLanguageAdapter(list)
-        rvLanguages.adapter = listLanguageAdapter
+        lifecycleScope.launch(Dispatchers.Main){
+            rvLanguages.layoutManager = LinearLayoutManager(this@MainActivity)
+            val listLanguageAdapter = ListLanguageAdapter(list)
+            rvLanguages.adapter = listLanguageAdapter
 
-        listLanguageAdapter.setOnItemClickCallback(object :
-            ListLanguageAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Language) {
-                showSelectedLanguage(data)
-            }
-        })
+            listLanguageAdapter.setOnItemClickCallback(object :
+                ListLanguageAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: Language) {
+                    showSelectedLanguage(data)
+                }
+            })
+        }
     }
 
     private fun showRecyclerGrid(list: ArrayList<Language>) {
-        rvLanguages.layoutManager = GridLayoutManager(this, 2)
-        val gridLanguageAdapter = GridLanguageAdapter(list)
-        rvLanguages.adapter = gridLanguageAdapter
+        lifecycleScope.launch(Dispatchers.Main){
+            rvLanguages.layoutManager = GridLayoutManager(this@MainActivity, 2)
+            val gridLanguageAdapter = GridLanguageAdapter(list)
+            rvLanguages.adapter = gridLanguageAdapter
 
-        gridLanguageAdapter.setOnItemClickCallback(object :
-            GridLanguageAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Language) {
-                showSelectedLanguage(data)
-            }
-        })
+            gridLanguageAdapter.setOnItemClickCallback(object :
+                GridLanguageAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: Language) {
+                    showSelectedLanguage(data)
+                }
+            })
+        }
     }
 
     private fun showRecyclerCardView(list: ArrayList<Language>) {
-        rvLanguages.layoutManager = LinearLayoutManager(this)
-        val cardViewLanguageAdapter = CardViewLanguageAdapter(list)
-        rvLanguages.adapter = cardViewLanguageAdapter
+        lifecycleScope.launch(Dispatchers.Main){
+            rvLanguages.layoutManager = LinearLayoutManager(this@MainActivity)
+            val cardViewLanguageAdapter = CardViewLanguageAdapter(list)
+            rvLanguages.adapter = cardViewLanguageAdapter
 
-        cardViewLanguageAdapter.setOnItemClickCallback(object :
-            CardViewLanguageAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Language) {
-                showSelectedLanguage(data)
-            }
-        })
+            cardViewLanguageAdapter.setOnItemClickCallback(object :
+                CardViewLanguageAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: Language) {
+                    showSelectedLanguage(data)
+                }
+            })
+        }
     }
 
     private fun setActionBarTitle(title: String) {
@@ -234,8 +243,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSelectedLanguage(language: Language) {
-        val stringToast: String = getString(R.string.toast)
-        Toast.makeText(this, "$stringToast ${language.name}", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("extra_language", language)
         startActivity(intent)

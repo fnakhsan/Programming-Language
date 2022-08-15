@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.programminglanguage.R
 import com.example.programminglanguage.model.Language
-import kotlinx.coroutines.*
 
 class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
     RecyclerView.Adapter<CardViewLanguageAdapter.CardViewViewHolder>() {

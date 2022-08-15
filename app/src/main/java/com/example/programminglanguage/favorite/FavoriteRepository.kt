@@ -23,7 +23,9 @@ class FavoriteRepository(application: Application) {
         }
     }
 
-    fun getAll(): LiveData<List<Language>> = mFavDao.getAll()
+    fun getAllChanges(): LiveData<List<Language>> = mFavDao.getAllChanges()
+
+    suspend fun getAll(): List<Language> = mFavDao.getAll()
 
     fun countFav(name: String): Int = mFavDao.countFav(name)
 

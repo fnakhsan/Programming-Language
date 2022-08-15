@@ -10,7 +10,10 @@ interface FavoriteDao {
     fun insert(favorite: Language)
 
     @Query("SELECT * FROM language")
-    fun getAll(): LiveData<List<Language>>
+    fun getAllChanges(): LiveData<List<Language>>
+
+    @Query("SELECT * FROM language")
+    suspend fun getAll(): List<Language>
 
     @Query("SELECT COUNT(*) FROM language where language.name = :name")
     fun countFav(name: String): Int

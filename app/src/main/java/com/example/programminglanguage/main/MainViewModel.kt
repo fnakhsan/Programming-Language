@@ -9,5 +9,7 @@ import com.example.programminglanguage.model.Language
 class MainViewModel(application: Application): AndroidViewModel(application) {
     private val repository: FavoriteRepository = FavoriteRepository(application)
 
-    fun getAll(): LiveData<List<Language>> = repository.getAll()
+    fun getAllChanges(): LiveData<List<Language>> = repository.getAllChanges()
+
+    suspend fun getAll(): List<Language> = repository.getAll()
 }
