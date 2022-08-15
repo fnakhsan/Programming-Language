@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,6 @@ import com.example.programminglanguage.adapter.ListLanguageAdapter
 import com.example.programminglanguage.databinding.ActivityMainBinding
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
-import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
@@ -115,14 +113,20 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.action_get_favorite -> {
                         Log.d(TAG, "Fav pressed")
+                        getFav = true
                         mainViewModel.getAll().observe(this) {
-                            if (it != null) {
-                                Log.d(TAG, "Fav triggered")
-                                showFav(title, it as ArrayList<Language>)
+                            if (getFav){
+                                if (it != null) {
+                                    Log.d(TAG, "Fav triggered")
+                                    showFav(title, it as ArrayList<Language>)
+                                }
+                                item.setIcon(R.drawable.ic_selected_favorite_24)
+
+                            } else {
+                                showFav(title, list)
+                                item.setIcon(R.drawable.ic_baseline_favorite_24)
                             }
                         }
-                        item.setIcon(R.drawable.ic_selected_favorite_24)
-                        getFav = true
                         Toast.makeText(
                             this,
                             "Show Favorite in $title",
@@ -135,25 +139,37 @@ class MainActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.action_list -> {
                         mainViewModel.getAll().observe(this) {
-                            if (it != null) {
-                                Log.d(TAG, "Fav list triggered")
-                                setMode(R.id.action_list, it as ArrayList<Language>)
+                            if (getFav){
+                                if (it != null) {
+                                    Log.d(TAG, "Fav list triggered")
+                                    setMode(R.id.action_list, it as ArrayList<Language>)
+                                }
+                            } else {
+                                setMode(R.id.action_list, list)
                             }
                         }
                     }
                     R.id.action_grid -> {
                         mainViewModel.getAll().observe(this) {
-                            if (it != null) {
-                                Log.d(TAG, "Fav grid triggered")
-                                setMode(R.id.action_grid, it as ArrayList<Language>)
+                            if (getFav){
+                                if (it != null) {
+                                    Log.d(TAG, "Fav grid triggered")
+                                    setMode(R.id.action_grid, it as ArrayList<Language>)
+                                }
+                            } else {
+                                setMode(R.id.action_grid, list)
                             }
                         }
                     }
                     R.id.action_cardview -> {
                         mainViewModel.getAll().observe(this) {
-                            if (it != null) {
-                                Log.d(TAG, "Fav cardview triggered")
-                                setMode(R.id.action_cardview, it as ArrayList<Language>)
+                            if (getFav){
+                                if (it != null) {
+                                    Log.d(TAG, "Fav cardview triggered")
+                                    setMode(R.id.action_cardview, it as ArrayList<Language>)
+                                }
+                            } else {
+                                setMode(R.id.action_cardview, list)
                             }
                         }
                     }

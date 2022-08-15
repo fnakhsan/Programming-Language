@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.programminglanguage.R
 import com.example.programminglanguage.model.Language
+import kotlinx.coroutines.*
 
 class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
     RecyclerView.Adapter<CardViewLanguageAdapter.CardViewViewHolder>() {
@@ -28,11 +29,9 @@ class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
     }
 
     inner class CardViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
         var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
         var tvDetail: TextView = itemView.findViewById(R.id.tv_item_detail)
-        var btnFavorite: Button = itemView.findViewById(R.id.btn_set_favorite)
         var btnShare: Button = itemView.findViewById(R.id.btn_set_share)
 
     }
@@ -53,15 +52,6 @@ class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
 
             tvName.text = language.name
             tvDetail.text = language.detail
-
-            btnFavorite.setOnClickListener {
-                Toast.makeText(
-                    itemView.context,
-                    "Like " + listLanguage[position].name,
-                    Toast.LENGTH_SHORT
-                ).show()
-                btnFavorite.isSelected = !btnFavorite.isSelected
-            }
 
             btnShare.setOnClickListener {
                 Toast.makeText(

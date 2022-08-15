@@ -34,7 +34,6 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
             android:layout_toEndOf="@id/img_item_photo"
-            android:layout_toRightOf="@id/img_item_photo"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="@string/language_name" />
@@ -48,7 +47,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_toEndOf="@id/img_item_photo"
-            android:layout_toRightOf="@id/img_item_photo"
             android:ellipsize="end"
             android:maxLines="5"
             tools:text="@string/detail" />
@@ -59,24 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_toEndOf="@id/img_item_photo"
-            android:layout_toRightOf="@id/img_item_photo"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_set_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/like"
-                android:backgroundTint="@color/button_background_color"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <Button
                 android:id="@+id/btn_set_share"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/share"
