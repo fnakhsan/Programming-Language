@@ -22,7 +22,6 @@ import com.example.programminglanguage.detail.DetailActivity
 import com.example.programminglanguage.model.Language
 import com.example.programminglanguage.model.LanguagesData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
@@ -111,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.action_get_favorite -> {
                         showFav(title, list)
-                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        item.setIcon(R.drawable.ic_favorite_default)
                         getFav = false
                         Toast.makeText(
                             this,
@@ -139,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                         lifecycleScope.launch(Dispatchers.Main){
                             showFav(title, mainViewModel.getAll() as ArrayList<Language>)
                         }
-                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        item.setIcon(R.drawable.ic_favorite_selected)
                         getFav = true
                         Toast.makeText(
                             this,

@@ -1,23 +1,26 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.ProgrammingLanguage" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="Theme.ProgrammingLanguage" parent="Theme.AppCompat.Light">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/dark</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="titleTextColor">@color/dark</item>
+
         <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">@color/dark</item>
     </style>
-    <style name="NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="NoActionBar" parent="Theme.AppCompat.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/dark</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -25,6 +28,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">@color/dark</item>
     </style>
     <style name="SplashScreen" parent="NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>

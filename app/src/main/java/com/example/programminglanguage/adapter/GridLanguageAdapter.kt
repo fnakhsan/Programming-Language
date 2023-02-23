@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.programminglanguage.R
 import com.example.programminglanguage.model.Language
 
@@ -35,7 +34,6 @@ class GridLanguageAdapter (private val listLanguage: ArrayList<Language>) :
         override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
             Glide.with(holder.itemView.context)
                 .load(listLanguage[position].photo)
-                .apply(RequestOptions().override(350, 550))
                 .into(holder.imgPhoto)
 
             holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listLanguage[position]) }

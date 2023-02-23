@@ -1,11 +1,12 @@
 package com.example.programminglanguage.detail
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.programminglanguage.R
@@ -29,7 +30,12 @@ class DetailActivity : AppCompatActivity() {
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        language = intent.getParcelableExtra(EXTRA_LANGUAGE)!!
+        language = if (Build.VERSION.SDK_INT >= 33) {
+            intent.getParcelableExtra(EXTRA_LANGUAGE, Language::class.java)!!
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra(EXTRA_LANGUAGE)!!
+        }
         detailViewModel = obtainViewModel(this@DetailActivity)
 
         binding.apply {
@@ -52,10 +58,10 @@ class DetailActivity : AppCompatActivity() {
             favStatus = detailViewModel.isFavorite(language.name)
             when (favStatus) {
                 true -> {
-                    fav?.setIcon(R.drawable.ic_selected_favorite_24)
+                    fav?.setIcon(R.drawable.ic_favorite_selected)
                 }
                 false -> {
-                    fav?.setIcon(R.drawable.ic_baseline_favorite_24)
+                    fav?.setIcon(R.drawable.ic_favorite_default)
                 }
             }
         }
@@ -84,7 +90,7 @@ class DetailActivity : AppCompatActivity() {
                         lifecycleScope.launch(Dispatchers.IO) {
                             detailViewModel.insert(language)
                         }
-                        item.setIcon(R.drawable.ic_selected_favorite_24)
+                        item.setIcon(R.drawable.ic_favorite_selected)
                         favStatus = true
                         Toast.makeText(
                             this,
@@ -96,7 +102,7 @@ class DetailActivity : AppCompatActivity() {
                         lifecycleScope.launch(Dispatchers.IO) {
                             detailViewModel.delete(language)
                         }
-                        item.setIcon(R.drawable.ic_baseline_favorite_24)
+                        item.setIcon(R.drawable.ic_favorite_default)
                         favStatus = false
                         Toast.makeText(
                             this,
