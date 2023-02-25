@@ -9,9 +9,11 @@
     <string name="like">Like</string>
     <string name="share">Share</string>
     <string name="developer">Developer</string>
-    <string name="paradigm">Paradigm</string>
+    <string name="paradigm">Paradigma</string>
     <string name="about">About</string>
     <string name="username">Fatkhi Nur Akhsan</string>
     <string name="email">fatkhinurakhsan@gmail.com</string>
     <string name="toast">Kamu Memilih</string>
+    <string name="language_icon">Ikon Bahasa Pemrograman</string>
+    <string name="avatar">Foto profilKu</string>
 </resources>

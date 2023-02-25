@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="4dp"
+        android:contentDescription="@string/language_icon"
         android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars" />
 </LinearLayout>

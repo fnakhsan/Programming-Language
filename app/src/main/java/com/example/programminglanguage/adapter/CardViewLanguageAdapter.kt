@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.programminglanguage.R
 import com.example.programminglanguage.model.Language
 
@@ -46,7 +45,6 @@ class CardViewLanguageAdapter(private val listLanguage: ArrayList<Language>) :
         holder.apply {
             Glide.with(itemView.context)
                 .load(language.photo)
-                .apply(RequestOptions().override(350, 550))
                 .into(imgPhoto)
 
             tvName.text = language.name

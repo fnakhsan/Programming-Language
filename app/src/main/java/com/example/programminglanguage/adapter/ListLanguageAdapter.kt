@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.programminglanguage.R
 import com.example.programminglanguage.model.Language
 
@@ -33,7 +32,6 @@ class ListLanguageAdapter (private val listLanguage: ArrayList<Language>) :
         val language = listLanguage[position]
         Glide.with(holder.itemView.context)
             .load(language.photo)
-            .apply(RequestOptions().override(55, 55))
             .into(holder.imgPhoto)
         holder.tvName.text = language.name
         holder.tvDetail.text = language.detail

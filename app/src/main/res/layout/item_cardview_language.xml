@@ -13,6 +13,7 @@
         android:id="@+id/img_item_photo"
         android:layout_width="160dp"
         android:layout_height="160dp"
+        android:contentDescription="@string/language_icon"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
@@ -27,6 +28,7 @@
             android:id="@+id/tv_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/text"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="@string/language_name" />
@@ -35,11 +37,12 @@
             android:id="@+id/tv_item_detail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
+            android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="4"
+            android:textColor="@color/text"
             tools:text="@string/detail" />
 
         <Button

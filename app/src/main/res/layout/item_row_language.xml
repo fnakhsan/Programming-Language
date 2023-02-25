@@ -6,30 +6,36 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_item_photo"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginEnd="16dp"
+        android:contentDescription="@string/language_icon"
         tools:src="@tools:sample/avatars" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tv_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:textColor="@color/text"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="@string/language_name" />
+
         <TextView
             android:id="@+id/tv_item_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
+            android:textColor="@color/text"
             tools:text="@string/detail" />
     </LinearLayout>
 </LinearLayout>

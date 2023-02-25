@@ -13,4 +13,6 @@
     <string name="username">Fatkhi Nur Akhsan</string>
     <string name="email">fatkhinurakhsan@gmail.com</string>
     <string name="toast">You choose</string>
+    <string name="language_icon">Programming Language Icon</string>
+    <string name="avatar">My profile picture</string>
 </resources>
