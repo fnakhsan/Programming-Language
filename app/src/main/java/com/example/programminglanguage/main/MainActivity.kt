@@ -25,7 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
-
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding as ActivityMainBinding
@@ -149,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        if (item.itemId == R.id.action_profile) {
+        if (item.itemId == R.id.about_page) {
             val intent = Intent(this@MainActivity, AboutActivity::class.java)
             startActivity(intent)
         }
